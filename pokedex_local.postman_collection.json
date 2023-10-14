@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "9da3109b-a276-42af-91cf-f501b4f93e84",
+		"name": "bluesolution_pokedex_local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11424667"
+	},
+	"item": [
+		{
+			"name": "GetAllPokemons",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/pokedex/pokemon",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"pokedex",
+						"pokemon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPokemonsByName",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/pokedex/pokemon/by-name/pikachu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"pokedex",
+						"pokemon",
+						"by-name",
+						"pikachu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPokemonsByType",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/pokedex/pokemon/by-type/poison",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"pokedex",
+						"pokemon",
+						"by-type",
+						"poison"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPokemonDetailsById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/pokedex/pokemon/details/11ea531d-2001-41bd-9fb8-661aaf7846dc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"pokedex",
+						"pokemon",
+						"details",
+						"11ea531d-2001-41bd-9fb8-661aaf7846dc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdatePokemonStatus",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pokemonId\": \"11ea531d-2001-41bd-9fb8-661aaf7846dc\",\n    \"status\": \"FAVORITE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/pokedex/pokemon/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"pokedex",
+						"pokemon",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
