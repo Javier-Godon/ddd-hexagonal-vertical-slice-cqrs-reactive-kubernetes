@@ -22,6 +22,7 @@
     <testcontainers.version>1.18.3</testcontainers.version>
     <springdoc-openapi-starter-webflux-ui.version>2.2.0
     </springdoc-openapi-starter-webflux-ui.version>
+    <nexus-staging-maven.version>1.6.13</nexus-staging-maven.version>
   </properties>
   <dependencies>
     <dependency>
@@ -95,12 +96,63 @@
       <version>${testcontainers.version}</version>
     </dependency>
   </dependencies>
+<!--  <dependencyManagement>-->
+<!--    <dependencies>-->
+<!--      <dependency>-->
+<!--        <groupId>org.springframework.cloud</groupId>-->
+<!--        <artifactId>spring-cloud-dependencies</artifactId>-->
+<!--        <version>${spring-cloud.version}</version>-->
+<!--        <type>pom</type>-->
+<!--        <scope>import</scope>-->
+<!--      </dependency>-->
+<!--    </dependencies>-->
+<!--  </dependencyManagement>-->
+  <!--    <distributionManagement>-->
+  <!--        <snapshotRepository>-->
+  <!--            <id>nexus-snapshots</id>-->
+  <!--            <url>http://blue-ci-cd.com/nexus/repository/maven-snapshots/</url>-->
+  <!--        </snapshotRepository>-->
+  <!--        <repository>-->
+  <!--            <id>nexus-releases</id>-->
+  <!--            <url>http://blue-ci-cd.com/nexus/repository/maven-releases/</url>-->
+  <!--        </repository>-->
+  <!--    </distributionManagement>-->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://nexus-service.nexus:8081/nexus/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://nexus-service.nexus:8081/nexus/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>${nexus-staging-maven.version}</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <!--                    <nexusUrl>http://blue-ci-cd.com/nexus/</nexusUrl>-->
+          <nexusUrl>http://nexus-service.nexus:8081/nexus/</nexusUrl>
+          <skipStaging>true</skipStaging>
+        </configuration>
       </plugin>
     </plugins>
   </build>
