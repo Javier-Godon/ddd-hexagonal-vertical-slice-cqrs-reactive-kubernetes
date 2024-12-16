@@ -41,10 +41,6 @@ async def main():
             .with_workdir("/app")
         )
 
-        # Check if target directory exists
-        if not os.path.exists(os.path.join(project_root, "target")):
-            raise FileNotFoundError("Target directory not found. Maven build likely failed.")
-
         # build = (
         #     app.with_exec(["mvn", "clean", "package"])
         # )
