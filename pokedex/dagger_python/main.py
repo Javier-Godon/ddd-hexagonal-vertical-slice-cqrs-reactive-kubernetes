@@ -9,7 +9,7 @@ import requests
 
 async def main():
     # check for GitHub registry credentials in host environment
-    for var in ["CR_PAT", "GITHUB_USERNAME"]:
+    for var in ["CR_PAT", "USERNAME"]:
         if var not in os.environ:
             msg = f"{var} environment variable must be set"
             raise OSError(msg)
@@ -17,7 +17,7 @@ async def main():
     # initialize Dagger client
     cfg = dagger.Config(log_output=sys.stderr)
     async with (dagger.connection(cfg)):
-        username = os.environ["GITHUB_USERNAME"]
+        username = os.environ["USERNAME"]
         # set registry password as secret for Dagger pipeline
         password = dag.set_secret("password", os.environ["CR_PAT"])
 

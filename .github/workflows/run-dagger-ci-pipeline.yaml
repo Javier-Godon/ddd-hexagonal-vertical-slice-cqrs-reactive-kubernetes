@@ -11,6 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set Environment Variables
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          USERNAME: ${{ secrets.USERNAME }}
+        run: |
+          # Export environment variables so Dagger can access them
+          echo "CR_PAT=${CR_PAT}" >> $GITHUB_ENV
+          echo "USERNAME=${USERNAME}" >> $GITHUB_ENV
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
