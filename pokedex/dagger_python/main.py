@@ -29,18 +29,6 @@ async def main():
         source = dag.host().directory(project_root, exclude=["dagger_python", ".venv3.12"])
         maven_settings = dag.host().file(path="maven-settings.xml")
 
-        # create database service container for application unit tests
-        # mariadb = (
-        #     dag.container()
-        #     .from_("mariadb:10.11.2")
-        #     .with_env_variable("MARIADB_USER", "petclinic")
-        #     .with_env_variable("MARIADB_PASSWORD", "petclinic")
-        #     .with_env_variable("MARIADB_DATABASE", "petclinic")
-        #     .with_env_variable("MARIADB_ROOT_PASSWORD", "root")
-        #     .with_exposed_port(3306)
-        #     .as_service()
-        # )
-
         # use maven:3.9 container
         # mount cache and source code volumes
         # set working directory
