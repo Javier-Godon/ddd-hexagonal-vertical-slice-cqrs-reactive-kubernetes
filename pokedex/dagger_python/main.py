@@ -84,7 +84,6 @@ async def main():
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
             .with_directory("/app", package.directory("./target"))
-            # .with_exec(["cp", "-r", "/app/target", "/target"])
             .directory("/app")
             .docker_build(build_args=[BuildArg("tag", latest_commit)], dockerfile="./Dockerfile")
             # builds from Dockerfile
