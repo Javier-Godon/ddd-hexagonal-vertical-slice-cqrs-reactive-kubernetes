@@ -1,0 +1,40 @@
+name: Run Dagger Pipeline
+
+on:
+  workflow_dispatch: # Manually triggered workflow
+  repository_dispatch:
+    types:
+      - dagger-pipeline-trigger
+
+jobs:
+  run-dagger-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11" # Use the Python version required by your pipeline
+
+      # Step 3: Set up and activate virtual environment
+      - name: Set up virtual environment
+        run: |
+          python -m venv pokedex/dagger_python/venv
+          source pokedex/dagger_python/venv/bin/activate
+
+      # Step 4: Install Python dependencies
+      - name: Install dependencies
+        run: |
+          source pokedex/dagger_python/venv/bin/activate
+          pip install -r pokedex/dagger_python/requirements.txt
+
+      # Step 5: Execute Dagger pipeline
+      - name: Run Dagger pipeline
+        run: |
+          source pokedex/dagger_python/venv/bin/activate
+          python pokedex/dagger_python/main.py
