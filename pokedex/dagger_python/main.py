@@ -3,8 +3,8 @@ import sys
 
 import anyio
 import dagger
-from dagger import dag, BuildArg
 import requests
+from dagger import dag, BuildArg
 
 
 async def main():
@@ -83,9 +83,11 @@ async def main():
             dag.container()
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
-            .with_directory("/app", app.directory("app/target"))
-            .with_exec(["cp", "-r", "/app/target", "/target"])
-            .docker_build(build_args=[BuildArg("tag",latest_commit)],dockerfile="app/Dockerfile")  #builds from Dockerfile
+            .with_directory("/app", package.directory("./target"))
+            # .with_exec(["cp", "-r", "/app/target", "/target"])
+            .directory("/app")
+            .docker_build(build_args=[BuildArg("tag", latest_commit)], dockerfile="./Dockerfile")
+            # builds from Dockerfile
         )
 
         # publish image to registry
@@ -93,7 +95,7 @@ async def main():
         image_address = f"ghcr.io/{username.lower()}/ddd-hexagonal-vertical-slice-cqrs-reactive-kubernetes:{image_tag}"
         address = await build_image.with_registry_auth(
             "ghcr.io", username, password
-        ).with_exec(["ls", "-la", "/app/target"]).publish(image_address)
+        ).publish(image_address)
 
         # print image address
         print(f"Image published at: {address}")
