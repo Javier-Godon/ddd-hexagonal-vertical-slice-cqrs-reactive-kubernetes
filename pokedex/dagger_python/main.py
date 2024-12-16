@@ -4,6 +4,7 @@ import sys
 import anyio
 import dagger
 from dagger import dag, BuildArg
+import requests
 
 
 async def main():
@@ -98,16 +99,33 @@ async def main():
         # publish image to registry
         image_tag = latest_commit
         image_address = f"ghcr.io/{username.lower()}/ddd-hexagonal-vertical-slice-cqrs-reactive-kubernetes:{image_tag}"
-        address = await build_image.with_registry_auth(
-            "ghcr.io", username, password
-        ).publish(image_address)
+        # address = await build_image.with_registry_auth(
+        #     "ghcr.io", username, password
+        # ).publish(image_address)
+        #
+        # # print image address
+        # print(f"Image published at: {address}")
 
-        # print image address
-        print(f"Image published at: {address}")
+        # Trigger GitHub Action via repository_dispatch
+        dispatch_url = "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
+        headers = {
+            "Authorization": f"token {os.environ['CR_PAT']}",
+            "Accept": "application/vnd.github+json"
+        }
 
+        payload = {
+            "event_type": "image-tag-in-pokedex-dev-updated",
+            "client_payload": {
+                "image_tag": image_tag
+            }
+        }
 
+        response = requests.post(dispatch_url, json=payload, headers=headers)
 
-
+        if response.status_code == 204:
+            print("GitHub Action triggered successfully")
+        else:
+            print(f"Failed to trigger GitHub Action: {response.status_code} {response.text}")
 
 
 anyio.run(main)
