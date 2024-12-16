@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13" # Use the Python version required by your pipeline
+          python-version: "3.12" # Use the Python version required by your pipeline
 
       # Step 3: Set up and activate virtual environment
       - name: Set up virtual environment
