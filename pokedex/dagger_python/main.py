@@ -87,12 +87,12 @@ async def main():
         # publish image to registry
         image_tag = latest_commit
         image_address = f"ghcr.io/{username.lower()}/ddd-hexagonal-vertical-slice-cqrs-reactive-kubernetes:{image_tag}"
-        # address = await build_image.with_registry_auth(
-        #     "ghcr.io", username, password
-        # ).publish(image_address)
-        #
-        # # print image address
-        # print(f"Image published at: {address}")
+        address = await build_image.with_registry_auth(
+            "ghcr.io", username, password
+        ).publish(image_address)
+
+        # print image address
+        print(f"Image published at: {address}")
 
         # Trigger GitHub Action via repository_dispatch
         dispatch_url = "https://api.github.com/repos/Javier-Godon/cluster-continuous-delivery/dispatches"
