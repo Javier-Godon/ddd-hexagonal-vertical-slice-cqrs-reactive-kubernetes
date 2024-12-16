@@ -16,7 +16,7 @@ async def main():
 
     # initialize Dagger client
     cfg = dagger.Config(log_output=sys.stderr)
-    async with (dagger.connection(cfg)):
+    async with ((dagger.connection(cfg))):
         username = os.environ["USERNAME"]
         # set registry password as secret for Dagger pipeline
         password = dag.set_secret("password", os.environ["CR_PAT"])
@@ -40,6 +40,10 @@ async def main():
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
         )
+
+        # Check if target directory exists
+        if not os.path.exists(os.path.join(project_root, "target")):
+            raise FileNotFoundError("Target directory not found. Maven build likely failed.")
 
         # build = (
         #     app.with_exec(["mvn", "clean", "package"])
@@ -79,9 +83,9 @@ async def main():
             dag.container()
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
-            .with_directory("/app", package.directory("./target"))
-            .directory("/app")
-            .docker_build(build_args=[BuildArg("tag",latest_commit)])  #builds from Dockerfile
+            .with_directory("/app", app.directory("app/target"))
+            .with_exec(["cp", "-r", "/app/target", "/target"])
+            .docker_build(build_args=[BuildArg("tag",latest_commit)],dockerfile="app/Dockerfile")  #builds from Dockerfile
         )
 
         # publish image to registry
@@ -89,7 +93,7 @@ async def main():
         image_address = f"ghcr.io/{username.lower()}/ddd-hexagonal-vertical-slice-cqrs-reactive-kubernetes:{image_tag}"
         address = await build_image.with_registry_auth(
             "ghcr.io", username, password
-        ).publish(image_address)
+        ).with_exec(["ls", "-la", "/app/target"]).publish(image_address)
 
         # print image address
         print(f"Image published at: {address}")
