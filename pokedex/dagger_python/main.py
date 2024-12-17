@@ -75,14 +75,10 @@ async def main():
         # short_sha =  f"{latest_commit[:7]}"  # Shorten the commit hash for tagging
 
         print(f"Latest commit SHA: {latest_commit}")
+        # builds from Dockerfile
         build_image = (
-            dag.container()
-            .with_mounted_directory("/app", source)
-            .with_workdir("/app")
-            .with_directory("/app", package.directory("./target"))
-            .directory("/app")
+            package.directory("/app")
             .docker_build(build_args=[BuildArg("tag", latest_commit)], dockerfile="./Dockerfile")
-            # builds from Dockerfile
         )
 
         # publish image to registry
