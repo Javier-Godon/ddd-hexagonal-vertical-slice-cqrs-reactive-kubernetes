@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 import anyio
 import dagger
@@ -82,7 +83,9 @@ async def main():
         )
 
         # publish image to registry
-        image_tag = latest_commit
+        short_sha = latest_commit[:7]  # Shorten commit hash for tagging
+        timestamp = datetime.now().strftime("%Y-%m-%dT%H-%M")
+        image_tag = f"{short_sha}-{timestamp}"
         image_address = f"ghcr.io/{username.lower()}/ddd-hexagonal-vertical-slice-cqrs-reactive-kubernetes:{image_tag}"
         address = await build_image.with_registry_auth(
             "ghcr.io", username, password
